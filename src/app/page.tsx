@@ -46,7 +46,7 @@ export default function Page() {
           />
         )}
       </section>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }

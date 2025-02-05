@@ -1,12 +1,7 @@
-modules = ["nodejs-20", "web"]
-run = "npm run dev"
-
-[nix]
-channel = "stable-24_05"
-
-[deployment]
-run = ["sh", "-c", "npm run dev"]
-
+run = "bun i && bun dev"
 [[ports]]
 localPort = 3000
 externalPort = 80
+
+[deployment]
+run = ["sh", "-c", "bun i && bun dev"]
