@@ -6,3 +6,6 @@ externalPort = 80
 
 [deployment]
 run = ["sh", "-c", "bun i && bun dev"]
+
+[nix]
+channel = "stable-24_05"

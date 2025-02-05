@@ -22,7 +22,14 @@
     "permissionless": "^0.1.26",
     "react": "^18",
     "react-dom": "^18",
-    "siwe": "^2.3.2"
+    "siwe": "^2.3.2",
+    "@coinbase/cdp-agentkit-core": "^0.0.7",
+    "@coinbase/cdp-langchain": "^0.0.8",
+    "@langchain/core": "^0.3.20",
+    "@langchain/langgraph": "^0.2.24",
+    "@langchain/openai": "^0.3.14",
+    "dotenv": "^16.4.7",
+    "langchain-xai": "^0.2.2"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.0",
