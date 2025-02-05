@@ -1,5 +1,6 @@
 'use client';
 import Footer from 'src/components/Footer';
+import ChatComponent from 'src/components/ChatComponent';
 import TransactionWrapper from 'src/components/TransactionWrapper';
 import WalletWrapper from 'src/components/WalletWrapper';
 import { ONCHAINKIT_LINK } from 'src/links';
@@ -38,7 +39,10 @@ export default function Page() {
           </div>
         </div>
         {address ? (
-          <TransactionWrapper address={address} />
+          <>
+            <TransactionWrapper address={address} />
+            <ChatComponent />
+          </>
         ) : (
           <WalletWrapper
             className="w-[450px] max-w-full"
