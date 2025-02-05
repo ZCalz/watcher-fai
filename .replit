@@ -1,4 +1,5 @@
 run = "bun i && bun dev"
+modules = ["bun-1.1"]
 [[ports]]
 localPort = 3000
 externalPort = 80
