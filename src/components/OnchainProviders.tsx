@@ -1,3 +1,4 @@
+
 'use client';
 import { OnchainKitProvider } from '@coinbase/onchainkit';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
@@ -10,10 +11,9 @@ import { useWagmiConfig } from '../wagmi';
 
 type Props = { children: ReactNode };
 
-const queryClient = new QueryClient();
-
 function OnchainProviders({ children }: Props) {
   const wagmiConfig = useWagmiConfig();
+  const queryClient = new QueryClient();
 
   return (
     <WagmiProvider config={wagmiConfig}>
