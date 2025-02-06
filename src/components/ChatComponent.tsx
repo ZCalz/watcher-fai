@@ -9,7 +9,7 @@ export default function ChatComponent() {
 
   const handleSubmit = async (message: string) => {
     if (!message.trim()) return;
-    
+
     setMessages((prev) => [...prev, { role: 'user', content: message }]);
     setIsLoading(true);
 
@@ -28,19 +28,19 @@ export default function ChatComponent() {
       }
 
       const data = await response.json();
-      
+
       // Add each response to the messages
       data.responses.forEach((response: any) => {
-        setMessages((prev) => [...prev, { 
-          role: 'assistant', 
-          content: response.content 
+        setMessages((prev) => [...prev, {
+          role: 'assistant',
+          content: response.content
         }]);
       });
     } catch (error) {
       console.error('Error:', error);
-      setMessages((prev) => [...prev, { 
-        role: 'assistant', 
-        content: 'Sorry, there was an error processing your request.' 
+      setMessages((prev) => [...prev, {
+        role: 'assistant',
+        content: 'Sorry, there was an error processing your request.'
       }]);
     } finally {
       setIsLoading(false);
@@ -60,11 +60,10 @@ export default function ChatComponent() {
       <div className="flex-1 overflow-y-auto p-4 space-y-4 flex flex-col">
         {messages.map((msg, index) => (
           <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[90%] p-4 rounded-lg ${
-              msg.role === 'user' 
-                ? 'bg-blue-500 text-white rounded-br-none' 
-                : 'bg-gray-100 text-gray-800 rounded-bl-none'
-            }`}>
+            <div className={`max-w-[90%] p-4 rounded-lg ${msg.role === 'user'
+              ? 'bg-red-500 text-white rounded-br-none'
+              : 'bg-gray-100 text-gray-800 rounded-bl-none'
+              }`}>
               <p className="whitespace-pre-wrap">{msg.content}</p>
             </div>
           </div>
