@@ -96,34 +96,14 @@ const PORT = process.env.PORT || 3001;
 const startServer = async () => {
   try {
     await initializeAgent();
-    const server = app.listen(PORT, "0.0.0.0", () => {
+    app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server running on port ${PORT}`);
     });
-
-    // Handle server errors
-    server.on('error', (error) => {
-      console.error('Server error:', error);
-    });
-
-    // Keep the process alive
-    process.on('SIGINT', () => {
-      console.log('Shutting down server...');
-      server.close(() => {
-        process.exit(0);
-      });
-    });
-
-    return server;
   } catch (error) {
     console.error("Failed to initialize agent:", error);
-    // Keep running even if agent fails
-    const server = app.listen(PORT, "0.0.0.0", () => {
-      console.log(`Server running on port ${PORT} (without agent)`);
-    });
-    return server;
+    // Don't exit immediately to keep the process alive
+    console.error("Server will continue running without agent functionality");
   }
 };
 
-startServer().catch(error => {
-  console.error('Failed to start server:', error);
-});
+startServer();
