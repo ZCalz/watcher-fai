@@ -1,14 +1,49 @@
+
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { useCdpAgent } from '../hooks/useCdpAgent';
 
 export default function ChatComponent() {
   const [messages, setMessages] = useState<Array<{ role: string; content: string }>>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
- 
 
-  const handleSubmit = (message: string) => {
+  const handleSubmit = async (message: string) => {
+    if (!message.trim()) return;
+    
     setMessages((prev) => [...prev, { role: 'user', content: message }]);
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      
+      // Add each response to the messages
+      data.responses.forEach((response: any) => {
+        setMessages((prev) => [...prev, { 
+          role: 'assistant', 
+          content: response.content 
+        }]);
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      setMessages((prev) => [...prev, { 
+        role: 'assistant', 
+        content: 'Sorry, there was an error processing your request.' 
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const scrollToBottom = () => {
@@ -33,7 +68,14 @@ export default function ChatComponent() {
             </div>
           </div>
         ))}
-        <div ref={messagesEndRef} /> {/* Add ref for scrolling */}
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="max-w-[90%] p-4 rounded-lg bg-gray-100 text-gray-800">
+              <p>Thinking...</p>
+            </div>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
       </div>
       <div className="p-4 border-t">
         <textarea
@@ -43,8 +85,9 @@ export default function ChatComponent() {
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
               e.preventDefault();
-              handleSubmit(e.currentTarget.value);
+              const message = e.currentTarget.value;
               e.currentTarget.value = '';
+              handleSubmit(message);
             }
           }}
         />
