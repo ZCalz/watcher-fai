@@ -56,13 +56,13 @@ export default function ChatComponent() {
   }, [messages]);
 
   return (
-    <div className="w-full h-[80vh] flex flex-col bg-white rounded-lg shadow">
+    <div className="w-full h-[80vh] flex flex-col bg-[#fff] rounded-lg shadow">
       <div className="flex-1 overflow-y-auto p-4 space-y-4 flex flex-col">
         {messages.map((msg, index) => (
           <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[90%] p-4 rounded-lg ${msg.role === 'user'
-              ? 'bg-red-500 text-white rounded-br-none'
-              : 'bg-gray-100 text-gray-800 rounded-bl-none'
+              ? 'bg-[#FFD700] text-[#333] rounded-br-none'
+              : 'bg-[#FFB6C1] text-[#333] rounded-bl-none'
               }`}>
               <p className="whitespace-pre-wrap">{msg.content}</p>
             </div>
@@ -70,7 +70,7 @@ export default function ChatComponent() {
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="max-w-[90%] p-4 rounded-lg bg-gray-100 text-gray-800">
+            <div className="max-w-[90%] p-4 rounded-lg bg-[#FFB6C1] text-[#333]">
               <p>Thinking...</p>
             </div>
           </div>
@@ -80,7 +80,7 @@ export default function ChatComponent() {
       <div className="p-4 border-t">
         <textarea
           placeholder="Send a message..."
-          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFD700] resize-none"
           rows={3}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
