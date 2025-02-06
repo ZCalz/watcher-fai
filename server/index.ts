@@ -1,6 +1,15 @@
 import express from "express";
-import { CdpAgentkit } from "@coinbase/cdp-agentkit-core";
-import { CdpToolkit } from "@coinbase/cdp-langchain";
+import {
+  AgentKit,
+  CdpWalletProvider,
+  wethActionProvider,
+  walletActionProvider,
+  erc20ActionProvider,
+  cdpApiActionProvider,
+  cdpWalletActionProvider,
+  pythActionProvider,
+} from "@coinbase/agentkit";
+import { getLangChainTools } from "@coinbase/agentkit-langchain";
 import { HumanMessage } from "@langchain/core/messages";
 import { MemorySaver } from "@langchain/langgraph";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
@@ -24,11 +33,7 @@ let agentConfig: any;
 
 async function initializeAgent() {
   const llm = new ChatOpenAI({
-    model: "grok-beta",
-    apiKey: process.env.XAI_API_KEY,
-    configuration: {
-      baseURL: "https://api.x.ai/v1"
-    }
+    model: "gpt-4o-mini",
   });
 
   let walletDataStr: string | null = null;
@@ -36,14 +41,45 @@ async function initializeAgent() {
     walletDataStr = fs.readFileSync(WALLET_DATA_FILE, "utf8");
   }
 
-  const config = {
-    cdpWalletData: walletDataStr || undefined,
-    networkId: process.env.NETWORK_ID || "base-sepolia",
-  };
+    // Configure CDP Wallet Provider
+    const config = {
+      apiKeyName: process.env.CDP_API_KEY_NAME,
+      apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY?.replace(
+        /\\n/g,
+        "\n",
+      ),
+      cdpWalletData: walletDataStr || undefined,
+      networkId: process.env.NETWORK_ID || "base-sepolia",
+    };
 
-  const agentkit = await CdpAgentkit.configureWithWallet(config);
-  const cdpToolkit = new CdpToolkit(agentkit);
-  const tools = cdpToolkit.getTools();
+  const walletProvider = await CdpWalletProvider.configureWithWallet(config);
+
+  // Initialize AgentKit
+  const agentkit = await AgentKit.from({
+    walletProvider,
+    actionProviders: [
+      wethActionProvider(),
+      pythActionProvider(),
+      walletActionProvider(),
+      erc20ActionProvider(),
+      cdpApiActionProvider({
+        apiKeyName: process.env.CDP_API_KEY_NAME,
+        apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY?.replace(
+          /\\n/g,
+          "\n",
+        ),
+      }),
+      cdpWalletActionProvider({
+        apiKeyName: process.env.CDP_API_KEY_NAME,
+        apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY?.replace(
+          /\\n/g,
+          "\n",
+        ),
+      }),
+    ],
+  });
+
+  const tools = await getLangChainTools(agentkit);
   const memory = new MemorySaver();
 
   agent = createReactAgent({
@@ -51,11 +87,22 @@ async function initializeAgent() {
     tools,
     checkpointSaver: memory,
     messageModifier:
-      "You are a helpful agent that can interact onchain using the Coinbase Developer Platform Agentkit. You are empowered to interact onchain using your tools. If you ever need funds, you can request them from the faucet if you are on network ID `base-sepolia`. If not, you can provide your wallet details and request funds from the user. If someone asks you to do something you can't do with your currently available tools, you must say so, and encourage them to implement it themselves using the CDP SDK + Agentkit, recommend they go to docs.cdp.coinbase.com for more informaton. Be concise and helpful with your responses. Refrain from restating your tools' descriptions unless it is explicitly requested.",
+    `
+        You are a helpful agent that can interact onchain using the Coinbase Developer Platform AgentKit. You are 
+        empowered to interact onchain using your tools. If you ever need funds, you can request them from the 
+        faucet if you are on network ID 'base-sepolia'. If not, you can provide your wallet details and request 
+        funds from the user. Before executing your first action, get the wallet details to see what network 
+        you're on. If there is a 5XX (internal) HTTP error code, ask the user to try again later. If someone 
+        asks you to do something you can't do with your currently available tools, you must say so, and 
+        encourage them to implement it themselves using the CDP SDK + Agentkit, recommend they go to 
+        docs.cdp.coinbase.com for more information. Be concise and helpful with your responses. Refrain from 
+        restating your tools' descriptions unless it is explicitly requested.
+    `
   });
 
-  const exportedWallet = await agentkit.exportWallet();
-  fs.writeFileSync(WALLET_DATA_FILE, exportedWallet);
+  // Save wallet data
+  const exportedWallet = await walletProvider.exportWallet();
+  fs.writeFileSync(WALLET_DATA_FILE, JSON.stringify(exportedWallet));
 
   agentConfig = { configurable: { thread_id: "CDP Agentkit Chatbot Example!" } };
 }
