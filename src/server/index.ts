@@ -91,13 +91,17 @@ app.get("/health", (req, res) => {
 const PORT = process.env.PORT || 3001;
 
 // Initialize agent and start server
-initializeAgent()
-  .then(() => {
+const startServer = async () => {
+  try {
+    await initializeAgent();
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server running on port ${PORT}`);
     });
-  })
-  .catch((error) => {
+  } catch (error) {
     console.error("Failed to initialize agent:", error);
-    process.exit(1);
-  });
+    // Don't exit immediately to keep the process alive
+    console.error("Server will continue running without agent functionality");
+  }
+};
+
+startServer();
