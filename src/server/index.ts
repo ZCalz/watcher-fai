@@ -1,5 +1,6 @@
 
 import express from "express";
+import cors from "cors";
 import { CdpAgentkit } from "@coinbase/cdp-agentkit-core";
 import { CdpToolkit } from "@coinbase/cdp-langchain";
 import { HumanMessage } from "@langchain/core/messages";
@@ -12,6 +13,7 @@ import * as fs from "fs";
 dotenv.config();
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 const WALLET_DATA_FILE = "wallet_data.txt";
