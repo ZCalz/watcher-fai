@@ -15,7 +15,7 @@ export default function ChatComponent() {
 
     try {
       console.log('Sending message:', message);
-      const response = await fetch('http://0.0.0.0:3001/api/chat', {
+      const response = await fetch('http://localhost:3001/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
