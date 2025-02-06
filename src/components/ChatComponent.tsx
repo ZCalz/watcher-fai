@@ -5,7 +5,7 @@ import { useCdpAgent } from '../hooks/useCdpAgent';
 export default function ChatComponent() {
   const [messages, setMessages] = useState<Array<{ role: string; content: string }>>([]);
   const messagesEndRef = useRef(null);
-  const { sendMessage, error, isReady } = useCdpAgent();
+ 
 
   const handleSubmit = (message: string) => {
     setMessages((prev) => [...prev, { role: 'user', content: message }]);

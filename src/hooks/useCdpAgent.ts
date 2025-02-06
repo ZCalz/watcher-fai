@@ -17,7 +17,7 @@ export const useCdpAgent = () => {
       try {
         const llm = new ChatOpenAI({
           model: "grok-beta",
-          apiKey: process.env.NEXT_PUBLIC_XAI_API_KEY,
+          apiKey: process.env.XAI_API_KEY,
           configuration: {
             baseURL: "https://api.x.ai/v1"
           }
