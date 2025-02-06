@@ -59,7 +59,9 @@ async function initializeAgent() {
 app.post("/api/chat", async (req, res) => {
   try {
     const { message } = req.body;
+    console.log("Received message:", message);
     if (!message) {
+      console.log("no message");
       return res.status(400).json({ error: "Message is required" });
     }
 
@@ -86,7 +88,7 @@ app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // Initialize agent and start server
 initializeAgent()
