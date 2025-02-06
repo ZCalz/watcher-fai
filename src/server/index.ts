@@ -106,4 +106,13 @@ const startServer = async () => {
   }
 };
 
-startServer();
+// Prevent the process from exiting
+process.on('SIGINT', () => {
+  console.log('Shutting down server...');
+  process.exit(0);
+});
+
+startServer().catch(error => {
+  console.error('Failed to start server:', error);
+  process.exit(1);
+});
