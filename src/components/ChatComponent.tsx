@@ -1,6 +1,7 @@
 
 'use client';
 import { useState, useRef, useEffect } from 'react';
+// Ensure no server-side modules are imported in this client component
 
 export default function ChatComponent() {
   const [messages, setMessages] = useState<Array<{ role: string; content: string }>>([]);
