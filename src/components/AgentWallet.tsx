@@ -37,7 +37,7 @@ export default function AgentWallet() {
   if (!walletInfo) return <div>Loading wallet info...</div>;
 
   return (
-    <div className="bg-gray-100 rounded-lg p-4 mt-4">
+    <div className="bg-white rounded-lg p-4 mt-4">
       <h2 className="text-xl font-bold mb-2">Agent Wallet Info</h2>
       <div className="space-y-2">
         {error && <p className="text-red-500 text-sm mb-2">Error: {error}</p>}

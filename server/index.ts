@@ -80,17 +80,6 @@ async function initializeAgent() {
         apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY?.replace(
           /\\n/g,
           "\n",
-
-app.get("/api/wallet-info", async (req, res) => {
-  try {
-    const walletInfo = await agentkit.walletProvider.getWalletDetails();
-    res.json(walletInfo);
-  } catch (error) {
-    console.error("Wallet info error:", error);
-    res.status(500).json({ error: "Failed to fetch wallet info" });
-  }
-});
-
         ),
       }),
     ],
@@ -159,6 +148,16 @@ app.post("/api/chat", async (req, res) => {
 // Health check endpoint
 app.get("/health", (req, res) => {
   res.json({ status: "ok" });
+});
+
+app.get("/api/wallet-info", async (req, res) => {
+  try {
+    const walletInfo = await agentkit.walletProvider.getWalletDetails();
+    res.json(walletInfo);
+  } catch (error) {
+    console.error("Wallet info error:", error);
+    res.status(500).json({ error: "Failed to fetch wallet info" });
+  }
 });
 
 const PORT = process.env.PORT || 3001;

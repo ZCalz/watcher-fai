@@ -31,8 +31,8 @@ export default function Page() {
           </div>
         </div>
       </section>
+      <AgentWallet />
       <section className="templateSection flex w-full flex-col items-center justify-center gap-4 rounded-xl bg-gray-100 px-8 py-10 md:grow">
-        <AgentWallet />
         <ChatComponent />
       </section>
       <Footer />
