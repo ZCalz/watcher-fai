@@ -7,8 +7,10 @@ import {
   erc20ActionProvider,
   cdpApiActionProvider,
   cdpWalletActionProvider,
+  // alchemyTokenPricesActionProvider,
   pythActionProvider,
 } from "@coinbase/agentkit";
+import { pastProtocolsActionProvider } from "./customProvider";
 import { getLangChainTools } from "@coinbase/agentkit-langchain";
 import { HumanMessage } from "@langchain/core/messages";
 import { MemorySaver } from "@langchain/langgraph";
@@ -61,6 +63,10 @@ async function initializeAgent() {
       wethActionProvider(),
       pythActionProvider(),
       walletActionProvider(),
+      // alchemyTokenPricesActionProvider({
+      //   apiKey: process.env.ALCHEMY_API_KEY
+      // }),
+      // pastProtocolsActionProvider(),
       erc20ActionProvider(),
       cdpApiActionProvider({
         apiKeyName: process.env.CDP_API_KEY_NAME,
@@ -74,6 +80,17 @@ async function initializeAgent() {
         apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY?.replace(
           /\\n/g,
           "\n",
+
+app.get("/api/wallet-info", async (req, res) => {
+  try {
+    const walletInfo = await agentkit.walletProvider.getWalletDetails();
+    res.json(walletInfo);
+  } catch (error) {
+    console.error("Wallet info error:", error);
+    res.status(500).json({ error: "Failed to fetch wallet info" });
+  }
+});
+
         ),
       }),
     ],
@@ -119,7 +136,9 @@ app.post("/api/chat", async (req, res) => {
     const responses: any[] = [];
     const stream = await agent.stream({ messages: [new HumanMessage(message.toString())] }, agentConfig);
 
+    console.log("strean: ", stream)
     for await (const chunk of stream) {
+          console.log("chunk: ", chunk)
       if ("agent" in chunk) {
         responses.push({ type: "agent", content: chunk.agent.messages[0].content });
       } else if ("tools" in chunk) {
