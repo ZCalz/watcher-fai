@@ -174,7 +174,7 @@ app.get("/api/wallet-info", async (req, res) => {
       balance: ethers.formatEther((await walletProvider.getBalance())).toString(),
       network: walletProvider.getNetwork().networkId
     }
-    
+
 
     res.json(walletInfo);
   } catch (error) {
@@ -182,6 +182,20 @@ app.get("/api/wallet-info", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch wallet info" });
   }
 });
+
+app.get("/api/transactions", async (req, res) => {
+  try {
+    let walletDataStr = fs.readFileSync(WALLET_DATA_FILE, "utf8");
+    const walletData = JSON.parse(walletDataStr);
+    const provider = new ethers.JsonRpcProvider(process.env.RPC_URL || "https://sepolia.base.org");
+    const history = await provider.getHistory(walletData.address);
+    res.json(history);
+  } catch (error) {
+    console.error("Transactions error:", error);
+    res.status(500).json({ error: "Failed to fetch transactions" });
+  }
+});
+
 
 const PORT = process.env.PORT || 3001;
 
