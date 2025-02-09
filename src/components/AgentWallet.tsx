@@ -8,6 +8,12 @@ type WalletInfo = {
   network: string;
 };
 
+const defaultWalletInfo: WalletInfo = {
+  address: '0x0000000000000000000000000000000000000000',
+  balance: '0',
+  network: 'Unknown'
+};
+
 export default function AgentWallet() {
   const [walletInfo, setWalletInfo] = useState<WalletInfo | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -21,19 +27,20 @@ export default function AgentWallet() {
         setWalletInfo(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Error fetching wallet info');
+        setWalletInfo(defaultWalletInfo);
       }
     };
 
     fetchWalletInfo();
   }, []);
 
-  if (error) return <div className="text-red-500">Error: {error}</div>;
   if (!walletInfo) return <div>Loading wallet info...</div>;
 
   return (
     <div className="bg-gray-100 rounded-lg p-4 mt-4">
       <h2 className="text-xl font-bold mb-2">Agent Wallet Info</h2>
       <div className="space-y-2">
+        {error && <p className="text-red-500 text-sm mb-2">Error: {error}</p>}
         <p><span className="font-medium">Address:</span> {walletInfo.address}</p>
         <p><span className="font-medium">Balance:</span> {walletInfo.balance}</p>
         <p><span className="font-medium">Network:</span> {walletInfo.network}</p>
