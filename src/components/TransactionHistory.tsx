@@ -37,28 +37,35 @@ export default function TransactionHistory() {
   const getPlaceholderTransactions = (): Transaction[] => {
     return [
       {
-        hash: '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
-        from: '0x1234567890abcdef1234567890abcdef12345678',
-        to: '0xabcdef1234567890abcdef1234567890abcdef12',
-        value: '0.1',
+        hash: '0x1234.....cdefExample',
+        from: '0x1234...4567Example',
+        to: '0xabcd...def1Example',
+        value: '0.000',
         timestamp: Date.now() / 1000,
       },
-      {
-        hash: '0xfedcba0987654321fedcba0987654321fedcba0987654321fedcba0987654321',
-        from: '0xabcdef1234567890abcdef1234567890abcdef12',
-        to: '0x1234567890abcdef1234567890abcdef12345678',
-        value: '0.05',
-        timestamp: (Date.now() - 86400000) / 1000, // 1 day ago
-      }
+      // {
+      //   hash: '0xfedcba0987654321fedcba0987654321fedcba0987654321fedcba0987654321',
+      //   from: '0xabcdef1234567890abcdef1234567890abcdef12',
+      //   to: '0x1234567890abcdef1234567890abcdef12345678',
+      //   value: '0.05',
+      //   timestamp: (Date.now() - 86400000) / 1000, // 1 day ago
+      // },
+      // {
+      //   hash: '0xfedcba0987654321fedcba0987654321fedcba0987654321fedcba0987654321',
+      //   from: '0xabcdef1234567890abcdef1234567890abcdef12',
+      //   to: '0x1234567890abcdef1234567890abcdef12345678',
+      //   value: '0.05',
+      //   timestamp: (Date.now() - 86400000) / 1000, // 1 day ago
+      // }
     ];
   };
 
   if (isLoading) return <div>Loading transactions...</div>;
 
   return (
-    <div className="bg-white rounded-lg p-4 max-h-[400px] overflow-y-auto w-full">
+    <div className="bg-white rounded-lg p-4 w-full">
       <h2 className="text-xl font-bold mb-4">Transaction History</h2>
-      <div className="space-y-2">
+      <div className="space-y-2 max-h-[200px] overflow-y-auto">
         {transactions.map((tx) => (
           <div key={tx.hash} className="p-4 bg-gray-100 rounded-lg">
             <div className="flex justify-between items-center">
