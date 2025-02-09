@@ -9,6 +9,8 @@ import OnchainkitSvg from 'src/svg/OnchainkitSvg';
 import { useAccount } from 'wagmi';
 import LoginButton from '../components/LoginButton';
 import SignupButton from '../components/SignupButton';
+import TransactionHistory from '../components/TransactionHistory'; //Import TransactionHistory component
+
 
 export default function Page() {
   const { address } = useAccount();
