@@ -9,7 +9,7 @@
   --palette-bg-white: #FFB6C1;  /* Light pink */
   --primary-color: #FFD700;     /* Gold */
   --accent-color: #FFC0CB;      /* Pink */
-  --text-color: #333;           /* Dark text for contrast */
+  --text-color: #fff;           /* Dark text for contrast */
 
   color-scheme: light;
 }
