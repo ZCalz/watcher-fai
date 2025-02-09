@@ -9,7 +9,7 @@ export default function ChatComponent() {
 
   const handleSubmit = async (message: string) => {
     if (!message.trim()) return;
-    
+
     setMessages((prev) => [...prev, { role: 'user', content: message }]);
     setIsLoading(true);
 
@@ -28,19 +28,19 @@ export default function ChatComponent() {
       }
 
       const data = await response.json();
-      
+
       // Add each response to the messages
       data.responses.forEach((response: any) => {
-        setMessages((prev) => [...prev, { 
-          role: 'assistant', 
-          content: response.content 
+        setMessages((prev) => [...prev, {
+          role: 'assistant',
+          content: response.content
         }]);
       });
     } catch (error) {
       console.error('Error:', error);
-      setMessages((prev) => [...prev, { 
-        role: 'assistant', 
-        content: 'Sorry, there was an error processing your request.' 
+      setMessages((prev) => [...prev, {
+        role: 'assistant',
+        content: 'Sorry, there was an error processing your request.'
       }]);
     } finally {
       setIsLoading(false);
@@ -56,22 +56,21 @@ export default function ChatComponent() {
   }, [messages]);
 
   return (
-    <div className="w-full h-[80vh] flex flex-col bg-white rounded-lg shadow">
+    <div className="w-full h-[80vh] flex flex-col bg-[var(--palette-bg-black)] rounded-lg shadow">
       <div className="flex-1 overflow-y-auto p-4 space-y-4 flex flex-col">
         {messages.map((msg, index) => (
           <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div className={`max-w-[90%] p-4 rounded-lg ${
-              msg.role === 'user' 
-                ? 'bg-blue-500 text-white rounded-br-none' 
-                : 'bg-gray-100 text-gray-800 rounded-bl-none'
-            }`}>
+            <div className={`max-w-[90%] p-4 rounded-lg ${msg.role === 'user'
+              ? 'bg-[var(--primary-color)] text-[var(--text-color)] rounded-br-none'
+              : 'bg-[var(--palette-bg-white)] text-[var(--text-color)] rounded-bl-none'
+              }`}>
               <p className="whitespace-pre-wrap">{msg.content}</p>
             </div>
           </div>
         ))}
         {isLoading && (
           <div className="flex justify-start">
-            <div className="max-w-[90%] p-4 rounded-lg bg-gray-100 text-gray-800">
+            <div className="max-w-[90%] p-4 rounded-lg bg-[var(--palette-bg-white)] text-[var(--text-color)]">
               <p>Thinking...</p>
             </div>
           </div>
@@ -81,7 +80,7 @@ export default function ChatComponent() {
       <div className="p-4 border-t">
         <textarea
           placeholder="Send a message..."
-          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] resize-none"
           rows={3}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
