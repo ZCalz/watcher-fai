@@ -19,6 +19,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import * as dotenv from "dotenv";
 import * as fs from "fs";
 import cors from "cors";
+import { ethers } from "ethers";
 
 dotenv.config();
 
@@ -152,7 +153,29 @@ app.get("/health", (req, res) => {
 
 app.get("/api/wallet-info", async (req, res) => {
   try {
-    const walletInfo = await agentkit.walletProvider.getWalletDetails();
+    let walletDataStr: string | null = null;
+    if (fs.existsSync(WALLET_DATA_FILE)) {
+      walletDataStr = fs.readFileSync(WALLET_DATA_FILE, "utf8");
+    }
+    const config = {
+      apiKeyName: process.env.CDP_API_KEY_NAME,
+      apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY?.replace(
+        /\\n/g,
+        "\n",
+      ),
+      cdpWalletData: walletDataStr || undefined,
+      networkId: process.env.NETWORK_ID || "base-sepolia",
+    };
+
+    const walletProvider = await CdpWalletProvider.configureWithWallet(config);
+
+    const walletInfo = {
+      address: walletProvider.getAddress(),
+      balance: ethers.formatEther((await walletProvider.getBalance())).toString(),
+      network: walletProvider.getNetwork().networkId
+    }
+    
+
     res.json(walletInfo);
   } catch (error) {
     console.error("Wallet info error:", error);

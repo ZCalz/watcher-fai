@@ -34,7 +34,7 @@ export default function Footer() {
           </a>
         </h3>
       </aside>
-      <ul className="mt-4 flex max-w-full flex-col flex-wrap justify-center gap-3 md:mt-0 md:flex-row md:justify-start md:gap-6">
+      {/* <ul className="mt-4 flex max-w-full flex-col flex-wrap justify-center gap-3 md:mt-0 md:flex-row md:justify-start md:gap-6">
         {docLinks.map(({ href, title }) => (
           <li className="flex" key={href}>
             <a
@@ -49,7 +49,7 @@ export default function Footer() {
             </a>
           </li>
         ))}
-      </ul>
+      </ul> */}
     </section>
   );
 }

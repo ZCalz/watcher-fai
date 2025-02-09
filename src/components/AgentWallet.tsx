@@ -24,7 +24,13 @@ export default function AgentWallet() {
         const response = await fetch('http://0.0.0.0:3001/api/wallet-info');
         if (!response.ok) throw new Error('Failed to fetch wallet info');
         const data = await response.json();
-        setWalletInfo(data);
+        console.log("Datahwre: ",data);
+        let out: WalletInfo =  {
+          address: `${data.address}`,
+          balance: `${data.balance}`,
+          network: `${data.network}`,
+        }
+        setWalletInfo(out);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Error fetching wallet info');
         setWalletInfo(defaultWalletInfo);
