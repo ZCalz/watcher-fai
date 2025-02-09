@@ -6,11 +6,11 @@
 :root {
   /* Palette */
   --palette-bg-black: #fff;
-  --palette-bg-white: rgb(21, 26, 38);
+  --palette-bg-white: #FFB6C1;  /* Light pink */
+  --primary-color: #FFD700;     /* Gold */
+  --accent-color: #FFC0CB;      /* Pink */
+  --text-color: #aaa;           /* Dark text for contrast */
 
-  /* Indicates that the element can be rendered using 
-   * the operating system dark color scheme. 
-   * https://developer.mozilla.org/en-US/docs/Web/CSS/color-scheme */
   color-scheme: light;
 }
 
@@ -37,11 +37,20 @@ body {
   height: 100%;
   margin: 0;
   background-color: var(--palette-bg-black);
-  color: var(--palette-bg-white);
+  color: var(--text-color);
   font-family: Inter, sans-serif;
   overflow-x: hidden;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+}
+
+button {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+a {
+  color: var(--accent-color);
 }
 
 a {
