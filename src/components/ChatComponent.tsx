@@ -56,7 +56,7 @@ export default function ChatComponent() {
   }, [messages]);
 
   return (
-    <div className="w-full h-[80vh] flex flex-col bg-[var(--palette-bg-black)] rounded-lg shadow">
+    <div className="w-full h-[50vh] flex flex-col bg-[var(--palette-bg-black)] rounded-lg shadow">
       <div className="flex-1 overflow-y-auto p-4 space-y-4 flex flex-col">
         {messages.map((msg, index) => (
           <div key={index} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>

@@ -19,6 +19,15 @@ import { ChatOpenAI } from "@langchain/openai";
 import * as dotenv from "dotenv";
 import * as fs from "fs";
 import cors from "cors";
+import { ethers } from "ethers";
+import { Alchemy, Network } from "alchemy-sdk";
+
+const settings = {
+  apiKey: process.env.ALCHEMY_API_KEY,
+  network: Network.BASE_SEPOLIA
+};
+
+const alchemy = new Alchemy(settings);
 
 dotenv.config();
 
@@ -149,6 +158,67 @@ app.post("/api/chat", async (req, res) => {
 app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
+
+let walletDataStr: string | null = null;
+if (fs.existsSync(WALLET_DATA_FILE)) {
+  walletDataStr = fs.readFileSync(WALLET_DATA_FILE, "utf8");
+}
+const config = {
+  apiKeyName: process.env.CDP_API_KEY_NAME,
+  apiKeyPrivateKey: process.env.CDP_API_KEY_PRIVATE_KEY?.replace(
+    /\\n/g,
+    "\n",
+  ),
+  cdpWalletData: walletDataStr || undefined,
+  networkId: process.env.NETWORK_ID || "base-sepolia",
+};
+
+app.get("/api/wallet-info", async (req, res) => {
+  try {
+    const walletProvider = await CdpWalletProvider.configureWithWallet(config);
+
+    const walletInfo = {
+      address: walletProvider.getAddress(),
+      balance: ethers.formatEther((await walletProvider.getBalance())).toString(),
+      network: walletProvider.getNetwork().networkId
+    }
+
+
+    res.json(walletInfo);
+  } catch (error) {
+    console.error("Wallet info error:", error);
+    res.status(500).json({ error: "Failed to fetch wallet info" });
+  }
+});
+
+app.get("/api/transactions", async (req, res) => {
+  try {
+    const walletProvider = await CdpWalletProvider.configureWithWallet(config);
+
+    const address = await walletProvider.getAddress();
+    
+    const history = await alchemy.core.getAssetTransfers({
+      toAddress: address,
+      fromAddress: address, //"0x483543559ddC9C91A5650D50e34b660F2184761c",
+      // fromBlock: "0x2e86f1",
+      excludeZeroValue: true,
+      withMetadata: true,
+      category: ["erc20", "external"],
+      maxCount: 0x64,
+    });
+
+    // const provider = new ethers.AlchemyProvider("sepolia", process.env.ALCHEMY_API_KEY);
+
+    // const history2 = await provider.getHistory(walletData.address); // Fetch all transactions
+
+    console.log("TX history: ",history);
+    res.json(history);
+  } catch (error) {
+    console.error("Transactions error:", error);
+    res.status(500).json({ error: "Failed to fetch transactions" });
+  }
+});
+
 
 const PORT = process.env.PORT || 3001;
 
