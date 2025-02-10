@@ -198,7 +198,7 @@ app.get("/api/transactions", async (req, res) => {
     const address = await walletProvider.getAddress();
     
     const history = await alchemy.core.getAssetTransfers({
-      // toAddress: walletData.address,
+      toAddress: address,
       fromAddress: address, //"0x483543559ddC9C91A5650D50e34b660F2184761c",
       // fromBlock: "0x2e86f1",
       excludeZeroValue: true,
