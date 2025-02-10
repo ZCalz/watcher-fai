@@ -22,7 +22,8 @@ export default function TransactionHistory() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        setTransactions(data.length ? data : getPlaceholderTransactions());
+        console.log("Resonse data:: ", data)
+        setTransactions(data.transfers.length ? data.transfers : getPlaceholderTransactions());
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching transactions:', error);
@@ -69,18 +70,21 @@ export default function TransactionHistory() {
         {transactions.map((tx) => (
           <div key={tx.hash} className="p-4 bg-gray-100 rounded-lg">
             <div className="flex justify-between items-center">
-              <span className="text-sm">Value: {tx.value} ETH</span>
+              <span className="text-sm">
+                <p>Value: {tx.value} ETH</p>
+                <p>toAddress: {tx.to.slice(0,6)}...{tx.to.slice(25)}</p>
+              </span>
               <a
                 href={`https://sepolia.basescan.org/tx/${tx.hash}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-500 hover:text-blue-700"
               >
-                View on Basescan
+                <span className="text-sm">Tx Hash: {tx.hash.slice(0,6)}...{tx.hash.slice(60)}</span>
               </a>
             </div>
             <div className="text-xs text-gray-500 mt-1">
-              {new Date(tx.timestamp * 1000).toLocaleString()}
+              {new Date(tx.metadata.blockTimestamp).toLocaleString()}
             </div>
           </div>
         ))}
