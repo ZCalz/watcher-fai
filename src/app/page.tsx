@@ -9,6 +9,8 @@ import OnchainkitSvg from 'src/svg/OnchainkitSvg';
 import { useAccount } from 'wagmi';
 import LoginButton from '../components/LoginButton';
 import SignupButton from '../components/SignupButton';
+import TransactionHistory from '../components/TransactionHistory'; //Import TransactionHistory component
+
 
 export default function Page() {
   const { address } = useAccount();
@@ -31,7 +33,14 @@ export default function Page() {
           </div>
         </div>
       </section>
-      <AgentWallet />
+      <div className="flex flex-col md:flex-row gap-4 w-full">
+        <div className="w-full md:w-1/2">
+          <AgentWallet />
+        </div>
+        <div className="w-full md:w-1/2">
+          <TransactionHistory />
+        </div>
+      </div>
       <section className="templateSection flex w-full flex-col items-center justify-center gap-4 rounded-xl bg-gray-100 px-8 py-10 md:grow">
         <ChatComponent />
       </section>
