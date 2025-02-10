@@ -19,12 +19,12 @@ export const viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'Onchain App Template',
-  description: 'Built with OnchainKit',
+  title: 'Watcher.Fai',
+  description: 'Your Web3 Agentic Assistant',
   openGraph: {
-    title: 'Onchain App Template',
-    description: 'Built with OnchainKit',
-    images: [`${NEXT_PUBLIC_URL}/vibes/vibes-19.png`],
+    title: 'Watcher.Fai',
+    description: 'Your Web3 Agentic Assistant',
+    images: [`public/wf-logo.png`],
   },
 };
 

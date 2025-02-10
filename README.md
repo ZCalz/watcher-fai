@@ -5,15 +5,44 @@
   </picture>
 </p>
 
-# Onchain App Template
 
-An Onchain App Template build with [OnchainKit](https://onchainkit.xyz), and ready to be deployed to Vercel.
+# Watcher.Fai
+Watcher.Fai is your personal agentic assistant to help with your onchain interactions and your gateway to the world of web3. This assistant helps simplify complex interactions making web3 easier to access.
 
-Play with it live on https://onchain-app-template.vercel.app
+#### Watch the Demo:
 
-Have fun! ⛵️
+<a href="public/agentshowcase.mp4" target="_blank">
+  <img src="public/vid.png" width="600" height="340" alt="Watch the Demo">
+</a>
 
-<br />
+## Tech Stack
+
+- **Frontend**:
+  - Next.js 14
+  - React 18
+  - TypeScript
+  - Tailwind CSS
+  - Wagmi for Web3 integration
+
+- **Backend**:
+  - Express.js server
+  - LangChain for AI capabilities
+  - AgentKit for blockchain interactions
+  - CDP (Coinbase Developer Platform) integration
+  - Alchemy
+
+- **Blockchain**:
+  - OnchainKit for Web3 functionality
+  - Base Sepolia testnet support
+  - WalletConnect for wallet connections
+
+## Features
+
+- Real-time transaction history
+- Wallet integration
+- AI-powered chat interface
+- Blockchain interaction capabilities
+- Secure authentication
 
 ## Setup
 
@@ -29,35 +58,36 @@ NEXT_PUBLIC_CDP_API_KEY="GET_FROM_COINBASE_DEVELOPER_PLATFORM"
 
 # See https://cloud.walletconnect.com
 NEXT_PUBLIC_WC_PROJECT_ID="GET_FROM_WALLET_CONNECT"
-```
-<br />
 
-## Locally run
+ALCHEMY_API_KEY=""
+
+OPENAI_API_KEY=""
+
+```
+
+## Local Development
 
 ```sh
-# Install bun in case you don't have it
+# Install bun
 curl -fsSL https://bun.sh/install | bash
 
 # Install packages
 bun i
 
-# Run Next app
+# Run the development server
 bun run dev
 ```
-<br />
 
 ## Resources
 
 - [OnchainKit documentation](https://onchainkit.xyz)
 - We use the [OnchainKit Early Adopter](https://github.com/neodaoist/onchainkit-early-adopter) contract written by neodaoist [[X]](https://x.com/neodaoist)
 
-<br />
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Need more help?
+## Need Help?
 
 If you have any questions or need help, feel free to reach out to us on [Discord](https://discord.gg/8gW3h6w5) 
 or open a [Github issue](https://github.com/coinbase/onchainkit/issues) or DMs us 

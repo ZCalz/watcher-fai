@@ -84,7 +84,7 @@ export default function TransactionHistory() {
               </a>
             </div>
             <div className="text-xs text-gray-500 mt-1">
-              {new Date(tx.metadata.blockTimestamp).toLocaleString()}
+              {tx.metadata? new Date(tx.metadata.blockTimestamp).toLocaleString(): ""}
             </div>
           </div>
         ))}
