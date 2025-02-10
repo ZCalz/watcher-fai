@@ -3,7 +3,7 @@ Watcher.Fai is your personal agentic assistant to help with your onchain interac
 
 #### Watch the Demo:
 
-<a href="public/agentshowcase.mp4" target="_blank">
+<a href="https://youtu.be/Na6QAaXV4mI" target="_blank">
   <img src="public/vid.png" width="600" height="340" alt="Watch the Demo">
 </a>
 
